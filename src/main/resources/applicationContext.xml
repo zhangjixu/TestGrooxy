@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 导入 mysql redis solr mongodb mybatis 等配置文件 -->
+    <import resource="classpath*:spring-mysql.xml"/>
+
+    <!-- 自动扫描该目录下的@Component @Controller @Service等这些注解的类，则把这些类注册为bean-->
+    <context:component-scan base-package="com.cn.dhb">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+</beans>

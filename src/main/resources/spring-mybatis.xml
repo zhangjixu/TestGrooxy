@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:property-placeholder location="classpath:config/mysql.properties" ignore-unresolvable="true"/>
+
+    <bean id="dataSourceMysql" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${mysql_url}"/>
+        <property name="username" value="${mysql_username}"/>
+        <property name="password" value="${mysql_password}"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${initialSize}"/>
+        <!-- 连接池中同时可以分派的最大活跃连接数 -->
+        <property name="maxActive" value="${maxActive}"/>
+        <!-- 连接池中最大空闲连接数 -->
+        <property name="maxIdle" value="${maxIdle}"/>
+        <!-- 连接池中最小空闲连接数 -->
+        <property name="minIdle" value="${minIdle}"/>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${maxWait}"/>
+        <!--默认值是 true ，当从连接池取连接时，验证这个连接是否有效-->
+        <property name="testOnBorrow" value="${testOnBorrow}"/>
+        <!--程序中的连接不使用后是否被连接池回收-->
+        <property name="removeAbandoned" value="true"/>
+        <!--程序中的连接超时时间，以秒为单位-->
+        <property name="removeAbandonedTimeout" value="30"/>
+        <!--SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录-->
+        <property name="validationQuery" value="${validationQuery}" />
+        <property name="validationQueryTimeout" value="${validationQueryTimeout}" />
+    </bean>
+
+    <!-- spring 和 MyBatis 整合，不需要 mybatis 的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceMysql" />
+        <!-- 配置 sql 语句打印到控制台  -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!-- 自动扫描 mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath*:com/cn/dhb/mybatis/*/*.xml" />
+    </bean>
+
+    <!-- DAO接口所在包名，Spring 会自动查找其下的接口 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cn.dhb.mybatis" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+
+
+</beans>

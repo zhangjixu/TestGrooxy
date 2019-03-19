@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的 namespace -->
+<mapper namespace="com.cn.dhb.mybatis.User.UserDao">
+
+    <!-- 如果表字段和实体类名称不一致可以使用一下方式 resultMap 和 resultType 只能用一个 -->
+    <!--<resultMap id="BaseResultMap" type="com.cn.dhb.mybatils.email.Email">
+        <id column="id" property="recid" jdbcType="id"/>
+        <result column="projectName" property="projectName" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+    </resultMap>-->
+
+    <!-- id属性值必须是唯一的，不能够重复 且与 dao 里的方法名一致-->
+    <select id="queryAllUser" resultType="com.cn.dhb.mybatis.User.User">
+        select * from `user`;
+    </select>
+
+    <select id="queryUser" resultType="com.cn.dhb.mybatis.User.User">
+        select * from `user` where id = #{id}
+    </select>
+
+</mapper>
